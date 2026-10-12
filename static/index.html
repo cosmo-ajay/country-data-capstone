@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f7f6" />
+    <title>Country Atlas | Dashboard</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/" aria-label="Country Atlas home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none">
+              <circle cx="16" cy="16" r="12.2" stroke="currentColor" stroke-width="1.8" />
+              <path d="M4 16h24M16 4c3.2 3.3 4.8 7.3 4.8 12S19.2 24.7 16 28M16 4c-3.2 3.3-4.8 7.3-4.8 12S12.8 24.7 16 28" stroke="currentColor" stroke-width="1.5" />
+              <path d="M7.2 8.7c2.5 1.5 5.5 2.3 8.8 2.3s6.3-.8 8.8-2.3M7.2 23.3c2.5-1.5 5.5-2.3 8.8-2.3s6.3.8 8.8 2.3" stroke="currentColor" stroke-width="1.3" />
+            </svg>
+          </span>
+          <span class="brand-copy"><strong>Country Atlas</strong><small>DATA EXPLORER</small></span>
+        </a>
+
+        <p class="nav-label">WORKSPACE</p>
+        <nav class="side-nav" aria-label="Main navigation">
+          <a class="nav-link active" href="/" aria-current="page">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="10" width="8" height="11" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/></svg>
+            Dashboard
+          </a>
+          <a class="nav-link" href="/docs">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.8h7l4 4V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.8a1 1 0 0 1 1-1Z"/><path d="M14 4v4h4M9 13h6M9 16.5h6"/></svg>
+            API reference <span class="external-mark" aria-hidden="true">↗</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-note">
+          <span class="note-icon" aria-hidden="true">✦</span>
+          <strong>Your data, at a glance</strong>
+          <p>Explore country profiles and compare population with land area.</p>
+        </div>
+
+        <div class="sidebar-footer"><span class="status-dot"></span><span>Local database</span><span class="version">v1.0</span></div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="breadcrumbs"><span>Workspace</span><span class="crumb-slash">/</span><strong>Overview</strong></div>
+          <div class="topbar-right"><span class="api-status"><span class="status-dot"></span>API connected</span><a class="avatar" href="/docs" aria-label="Open API documentation">CA</a></div>
+        </header>
+
+        <div class="page-wrap">
+          <section class="page-heading">
+            <div>
+              <p class="eyebrow">COUNTRY DATA PIPELINE</p>
+              <h1>Country overview</h1>
+              <p class="subtitle">A clear view of the places and numbers in your dataset.</p>
+            </div>
+            <div class="heading-actions">
+              <button class="button button-secondary" id="export-button" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v3h16v-3"/></svg>
+                Export CSV
+              </button>
+              <button class="button button-primary" id="add-button" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                Add country
+              </button>
+            </div>
+          </section>
+
+          <section class="stat-grid" aria-label="Country statistics">
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-label">COUNTRIES</span><span class="stat-icon icon-mint" aria-hidden="true">◎</span></div>
+              <div class="stat-value" id="total-countries">—</div>
+              <div class="stat-foot">Records in your database</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-label">TOTAL POPULATION</span><span class="stat-icon icon-lilac" aria-hidden="true">◉</span></div>
+              <div class="stat-value" id="total-population">—</div>
+              <div class="stat-foot">Across all listed countries</div>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span class="stat-label">TOTAL AREA</span><span class="stat-icon icon-sand" aria-hidden="true">⌖</span></div>
+              <div class="stat-value" id="total-area">—</div>
+              <div class="stat-foot">Square kilometers combined</div>
+            </article>
+          </section>
+
+          <section class="content-card table-card" aria-labelledby="countries-title">
+            <div class="card-heading">
+              <div><h2 id="countries-title">Countries</h2><p>Browse and manage your country records.</p></div>
+              <label class="search-box">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4.2 4.2"/></svg>
+                <input id="search-input" type="search" placeholder="Search countries..." autocomplete="off" />
+                <kbd>⌘ K</kbd>
+              </label>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th scope="col">COUNTRY</th><th scope="col">CAPITAL</th><th scope="col">POPULATION</th><th scope="col">AREA (SQ. KM)</th><th scope="col" class="actions-column">ACTIONS</th></tr></thead>
+                <tbody id="country-rows"><tr><td colspan="5" class="loading-cell">Loading countries…</td></tr></tbody>
+              </table>
+            </div>
+            <div class="table-footer"><span id="table-count">Loading records</span><button class="text-button" id="refresh-button" type="button">Refresh data <span aria-hidden="true">↻</span></button></div>
+          </section>
+
+          <section class="content-card chart-card">
+            <div class="chart-copy">
+              <p class="eyebrow">DATA SNAPSHOT</p>
+              <h2>Population meets geography</h2>
+              <p>Compare country population with total area. Each point represents one country in your current dataset.</p>
+              <a href="/population_vs_area.png" target="_blank" rel="noreferrer">Open full chart <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="chart-image-wrap"><img src="/population_vs_area.png" alt="Scatter plot comparing population and area for each country" onerror="this.closest('.chart-image-wrap').innerHTML='<div class=&quot;chart-empty&quot;>Run <code>python visualize.py</code> to generate the chart.</div>'" /></div>
+          </section>
+
+          <footer class="page-footer"><span>Country Atlas</span><span>Data served by your local FastAPI application</span></footer>
+        </div>
+      </main>
+    </div>
+
+    <dialog class="country-dialog" id="country-dialog" aria-labelledby="dialog-title">
+      <form id="country-form">
+        <div class="dialog-heading"><div><p class="eyebrow">COUNTRY RECORD</p><h2 id="dialog-title">Add a country</h2></div><button class="icon-button" id="close-dialog" type="button" aria-label="Close dialog">×</button></div>
+        <label class="field" id="name-field"><span>Country name</span><input id="country-name" name="country_name" required maxlength="100" placeholder="e.g. India" /></label>
+        <label class="field"><span>Capital city</span><input id="capital" name="capital" required maxlength="100" placeholder="e.g. New Delhi" /></label>
+        <div class="field-row">
+          <label class="field"><span>Population</span><input id="population" name="population" type="number" min="0" step="1" required placeholder="0" /></label>
+          <label class="field"><span>Area (sq. km)</span><input id="area-sq-km" name="area_sq_km" type="number" min="0" step="any" required placeholder="0" /></label>
+        </div>
+        <p class="form-error" id="form-error" role="alert"></p>
+        <div class="dialog-actions"><button class="button button-secondary" id="cancel-dialog" type="button">Cancel</button><button class="button button-primary" id="save-button" type="submit">Save country</button></div>
+      </form>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>
